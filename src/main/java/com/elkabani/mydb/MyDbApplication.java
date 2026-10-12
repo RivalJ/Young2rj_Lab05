@@ -1,46 +1,44 @@
 package com.elkabani.mydb;
 
-import com.elkabani.mydb.entities.Address;
-import com.elkabani.mydb.entities.User;
-import com.elkabani.mydb.repositories.UserRepository;
+import com.elkabani.mydb.entities.*;
 import com.elkabani.mydb.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import java.math.BigDecimal;
 
 @SpringBootApplication
 public class MyDbApplication {
 
     public static void main(String[] args) {
 
-      ApplicationContext context = SpringApplication.run(MyDbApplication.class, args);
-    //  var repository = context.getBean(UserRepository.class);
-        var service = context.getBean(UserService.class);
-    //    service.showEntityState();
-        service.showRelatedEntities();
-  /*    var user = User.builder()
-                .name("John")
-                .email("john@example.com")
-                .password("Password")
-                .build();
+        ConfigurableApplicationContext context = SpringApplication.run(MyDbApplication.class, args);
+        CategoryRepository categoryRepo = context.getBean(CategoryRepository.class);
+        ProductRepository productRepo = context.getBean(ProductRepository.class);
 
-      /*  var address = Address.builder()
-                .city("Cincinnati")
-                .state("Ohio")
-                .street("123 Main St")
-                .zipCode("45202")
-                .build();
-        user.addAddress(address); */
+        // 5A
+        Category electronics = new Category();
+        electronics.setName("Electronics");
+        categoryRepo.save(electronics);
 
-//        repository.save(user);
+        Product camera = new Product();
+        camera.setName("Camera");
+        camera.setPrice(new BigDecimal("499.99"));
+        camera.setCategory(electronics);
+        productRepo.save(camera);
 
-//        var user1 = repository.findById(2L).orElseThrow();
-//        System.out.println(user1.getEmail());
+        // 5B
+        Category existingCategory = categoryRepo.findById(electronics.getId()).orElseThrow();
+        Product headphones = new Product();
+        headphones.setName("Headphones");
+        headphones.setPrice(new BigDecimal("149.99"));
+        headphones.setCategory(existingCategory);
+        Product savedHeadphones = productRepo.save(headphones);
 
-//        var users = repository.findAll();
-//        users.forEach(u->System.out.println(u.getEmail()));
-
- //       repository.deleteById(1L);
+        // 5C
+        productRepo.deleteById(savedHeadphones.getId());
     }
 
 }
