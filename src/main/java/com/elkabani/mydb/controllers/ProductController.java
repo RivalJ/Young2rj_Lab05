@@ -36,9 +36,9 @@ public class ProductController {
                 .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDto> update(@RequestBody ProductDto productDto){
+    public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody ProductDto productDto){
         try{
-            return productService.update(productDto.getId(), productDto)
+            return productService.update(id, productDto)
                     .map(response -> new ResponseEntity<>(response, HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (IllegalArgumentException e){
