@@ -1,3 +1,5 @@
+server:
+  port: 8089
 spring:
   application:
     name: myDB
@@ -10,7 +12,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
